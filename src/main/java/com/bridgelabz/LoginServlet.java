@@ -15,7 +15,7 @@ import java.io.PrintWriter;
         urlPatterns = {"/LoginServlet"},
         initParams = {
                 @WebInitParam(name = "user", value = "Tekesh"),
-                @WebInitParam(name = "password", value = "ACE")
+                @WebInitParam(name = "password", value = "Tekesh@10")
         }
 )
 public class LoginServlet extends HttpServlet {
@@ -25,13 +25,15 @@ public class LoginServlet extends HttpServlet {
         String pwd = request.getParameter("pwd");
         String userID = getServletConfig().getInitParameter("user");
         String password = getServletConfig().getInitParameter("password");
-        if (userID.equals(user) && password.equals(pwd)) {
+        String nameValidation = "^[A-Z][a-z]{2,}";
+        String passwordValidation = "^(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[!@#$%^&]{1}).{8,}";
+        if (userID.equals(user) && password.equals(pwd) && userID.matches(nameValidation) && password.matches(passwordValidation)) {
             request.setAttribute("user", user);
             request.getRequestDispatcher("LoginSuccess.jsp").forward(request, response);
         } else {
             RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/login.html");
             PrintWriter printWriter = response.getWriter();
-            printWriter.println("<font colour=red>Either user name or password is incorrect</font>");
+            printWriter.println("<font colour=red>Either username or password is incorrect</font>");
             dispatcher.include(request, response);
         }
     }
